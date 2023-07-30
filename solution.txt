@@ -1,0 +1,73 @@
+Step 1: Create the Product Table
+```sql
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(255),
+    price DECIMAL(10, 2),
+    category VARCHAR(50)
+);
+```
+Explanation: The `Product` table stores information about products. It has five columns: `product_id` (a unique identifier for each product), `name` (the name of the product, which cannot be empty), `description` (a description of the product), `price` (the price of the product with up to 10 digits and 2 decimal places), and `category` (the category to which the product belongs).
+
+
+Step 2: Create the Region Table
+```sql
+CREATE TABLE Region (
+    region_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+```
+Explanation: The `Region` table stores information about regions. It has two columns: `region_id` (a unique identifier for each region) and `name` (the name of the region, which cannot be empty).
+
+
+
+Step 3: Create the TimePeriod Table
+```sql
+CREATE TABLE TimePeriod (
+    time_period_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+```
+Explanation: The `TimePeriod` table stores information about time periods. It has two columns: `time_period_id` (a unique identifier for each time period) and `name` (the name of the time period, which cannot be empty).
+
+
+
+Step 4: Create the Customer Table
+```sql
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255),
+    age INT,
+    loyalty_status VARCHAR(20)
+);
+```
+Explanation: The `Customer` table stores information about customers. It has five columns: `customer_id` (a unique identifier for each customer), `name` (the name of the customer, which cannot be empty), `address` (the customer's address), `age` (the age of the customer), and `loyalty_status` (the loyalty status of the customer).
+
+
+
+Step 5: Create the Purchase Table
+```sql
+CREATE TABLE Purchase (
+    purchase_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    time_period_id INT NOT NULL,
+    total_purchase_amount DECIMAL(10, 2),
+    FOREIGN KEY (customer_id) REFERENCES Customer (customer_id),
+    FOREIGN KEY (time_period_id) REFERENCES TimePeriod (time_period_id)
+);
+```
+Explanation: The `Purchase` table stores information about purchases. It has four columns: `purchase_id` (a unique identifier for each purchase), `customer_id` (the ID of the customer who made the purchase, which cannot be empty), `time_period_id` (the ID of the time period when the purchase was made, which cannot be empty), and `total_purchase_amount` (the total purchase amount with up to 10 digits and 2 decimal places). The table also includes foreign key constraints that reference the `Customer` and `TimePeriod` tables to establish relationships.
+
+
+
+Step 6: Create the PurchaseProduct Table (Many-to-Many Relationship)
+```sql
+CREATE TABLE PurchaseProduct (
+    purchase_id INT NOT NULL,
+    product_id INT NOT NULL,
+    PRIMARY KEY (purchase_id, product_id),
+    FOREIGN KEY (purchase_id) REFERENCES Purchase (purchase_id),
+    FOREIGN KEY (product_id) REFERENCES Product (product_id)
+);
